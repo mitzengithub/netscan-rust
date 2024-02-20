@@ -1,7 +1,6 @@
 mod cmd;
 mod netdiscovery;
 
-
 fn main() {
 
     use clap::Parser;
@@ -12,6 +11,10 @@ fn main() {
     // // You can check the value provided by positional arguments, or option arguments
     if let Some(hostname) = cli.target.as_deref() {
         println!("Value for name: {hostname}");
+        
+    let mut provider = netdiscovery::Provider::new(Vec::new());
+        
+        
     }
     
     // // if let Some(config_path) = cli.config.as_deref() {
