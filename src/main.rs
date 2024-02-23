@@ -5,7 +5,7 @@ fn main() {
     
     use clap::Parser;
     let cli = cmd::Cli::parse();
-    
+
     println!("name: {:?}", cli.target.as_deref());
     
     // // You can check the value provided by positional arguments, or option arguments
@@ -14,10 +14,18 @@ fn main() {
         
         let mut provider = netdiscovery::Provider::new(Vec::new());
         
+        let model = netdiscovery::ProviderModel{
+            host: hostname.to_string()
+        };
+
         let ping = netdiscovery::PingProvier{};
+        let http = netdiscovery::HttpProvider{};
+
         provider.add_task(&ping);
-        provider.execute();    
-        
+        provider.add_task(&http);
+        provider.execute(&model);
+
+        println!("{}", model.host);
     }
     
     // // if let Some(config_path) = cli.config.as_deref() {
