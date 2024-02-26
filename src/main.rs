@@ -1,5 +1,6 @@
 mod cmd;
 mod netdiscovery;
+mod networking;
 
 fn main() {
     
@@ -19,7 +20,7 @@ fn main() {
         };
 
         let ping = netdiscovery::PingProvier{};
-        let http = netdiscovery::HttpProvider{};
+        let http = networking::http::HttpProvider{};
 
         provider.add_task(&ping);
         provider.add_task(&http);

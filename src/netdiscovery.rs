@@ -57,26 +57,3 @@ impl NetworkTask for TraceRouter {
         println!("executing traceroute provider: {}", s.host);
     }
 }
-
-use reqwest::Client;
-pub struct HttpProvider {
-}
-
-struct HttpHaandler {
-    
-}
-
-impl HttpHaandler {
-    fn sendGetRequest(self, host: &ProviderModel) {
-        let endpoint = format!("https://{}", host.host);
-        let body = reqwest::blocking::get(endpoint);
-        println!("Endpoint: body = {:?}", body);
-    }     
-}
-
-impl NetworkTask for HttpProvider {
-    fn execute(&self, s: &ProviderModel) {
-        let h = HttpHaandler{};
-        h.sendGetRequest(s);
-    }
-}
