@@ -31,14 +31,6 @@ impl<'a> Provider<'a> {
     }
 }
 
-pub struct PingProvier { 
-}
-
-impl NetworkTask for PingProvier {
-    fn execute(&self, s: &ProviderModel) {
-        println!("executing ping provider from trait: {}", s.host);
-    }
-} 
 
 pub struct SqlServerDatabaseConnection { 
 }
@@ -49,11 +41,3 @@ impl NetworkTask for SqlServerDatabaseConnection {
     }
 }
 
-pub struct TraceRouter { 
-}
-
-impl NetworkTask for TraceRouter {
-    fn execute(&self, s: &ProviderModel) {
-        println!("executing traceroute provider: {}", s.host);
-    }
-}

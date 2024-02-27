@@ -19,39 +19,16 @@ fn main() {
             host: hostname.to_string()
         };
 
-        let ping = netdiscovery::PingProvier{};
+        let ping = networking::ping::PingProvider{};
         let http = networking::http::HttpProvider{};
+        let trt = networking::traceroute::TraceRouter{};
 
         provider.add_task(&ping);
         provider.add_task(&http);
+        provider.add_task(&trt);
+
         provider.execute(&model);
 
         println!("{}", model.host);
-    }
-    
-    // // if let Some(config_path) = cli.config.as_deref() {
-        // //     println!("Value for config: {}", config_path.display());
-        // // }
-        
-        // // You can see how many times a particular flag or argument occurred
-        // // Note, only flags can have multiple occurrences
-        // match cli.debug {
-            //     0 => println!("Debug mode is off"),
-            //     1 => println!("Debug mode is kind of on"),
-            //     2 => println!("Debug mode is on"),
-            //     _ => println!("Don't be crazy"),
-            // }
-            
-            // // You can check for the existence of subcommands, and if found use their
-            // // matches just as you would the top level cmd
-            // match &cli.command {
-                //     Some(cmd::Commands::Test { list }) => {
-                    //         if *list {
-                        //             println!("Printing testing lists...");
-                        //         } else {
-                            //             println!("Not printing testing lists...");
-                            //         }
-                            //     }
-                            //     None => {}
-                            // }    
-                        }
+    }    
+}
