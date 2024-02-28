@@ -14,19 +14,22 @@ fn main() {
         println!("Value for name: {hostname}");
 
         let mut provider = netdiscovery::Provider::new(Vec::new());
-        
-        let model = netdiscovery::ProviderModel{
-            host: hostname.trim().to_string()
-        };
-
-        //let ping = networking::ping::PingProvider{};
-        //let http = networking::http::HttpProvider{};
-        //let trt = networking::traceroute::TraceRouter{};
+                
+        let ping = networking::ping::TcpPingProvider{};
+        let http = networking::http::HttpProvider{};
+        let trt = networking::traceroute::TraceRouter{};
         let dns = networking::dns::DnsProvider{};
 
-        //provider.add_task(&ping);
-        //provider.add_task(&http);
-        //provider.add_task(&trt);
+        let address = dns.resolve_host(hostname);
+
+        let model = netdiscovery::ProviderModel{
+            host: hostname.trim().to_string(),
+            ip : address
+        };
+
+        provider.add_task(&ping);
+        provider.add_task(&http);
+        provider.add_task(&trt);
         provider.add_task(&dns);
         provider.execute(&model);
         

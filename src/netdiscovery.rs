@@ -1,4 +1,6 @@
 
+use std::net::{IpAddr};
+
 pub trait NetworkTask {
     fn execute(&self, s: &ProviderModel);
 }
@@ -8,7 +10,8 @@ pub struct Provider<'a> {
 }
 
 pub struct ProviderModel { 
-    pub host: String
+    pub host: String,
+    pub ip: IpAddr
 }
 
 impl<'a> Provider<'a> {
