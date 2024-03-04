@@ -39,4 +39,3 @@ impl NetworkTask for DnsProvider {
         println!("Ip resolved:{}", address.to_string());
     }    
 }
-

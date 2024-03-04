@@ -7,6 +7,9 @@ edition = "2021"
 
 [dependencies]
 clap = { version = "4.5.1", features = ["derive"] }
+openssl = "0.10.64"
 reqwest = { version = "0.11", features = ["blocking"] }
+rustls = "0.23.1"
 tracert = { version = "0.7" } 
 trust-dns-resolver = "0.23.2"
+webpki-roots = "0.26.1"

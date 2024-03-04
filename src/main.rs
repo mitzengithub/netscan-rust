@@ -1,6 +1,7 @@
 mod cmd;
 mod netdiscovery;
 mod networking;
+mod tls;
 
 fn main() {
     
@@ -19,18 +20,19 @@ fn main() {
         let http = networking::http::HttpProvider{};
         let trt = networking::traceroute::TraceRouter{};
         let dns = networking::dns::DnsProvider{};
+        let cert = tls::cert::CertProvider{};
 
         let address = dns.resolve_host(hostname);
-
         let model = netdiscovery::ProviderModel{
             host: hostname.trim().to_string(),
             ip : address
         };
 
-        provider.add_task(&ping);
-        provider.add_task(&http);
-        provider.add_task(&trt);
-        provider.add_task(&dns);
+        provider.add_task(&cert);
+        //provider.add_task(&ping);
+        //provider.add_task(&http);
+        //provider.add_task(&trt);
+        //provider.add_task(&dns);
         provider.execute(&model);
         
         //println!("{}", model.host);
