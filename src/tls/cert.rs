@@ -2,12 +2,43 @@ use std::io::{stdout, Read, Write};
 use crate::netdiscovery::{ProviderModel, NetworkTask};
 use std::net::TcpStream;
 use std::sync::Arc;
+use reqwest::Certificate;
 use rustls::RootCertStore;
 use rustls::pki_types::{ServerName};
 use openssl::x509::{X509Req, X509, X509NameRef};
 use rustls::{ClientConfig};
 
 pub struct CertProvider {
+}
+
+impl CertProvider {
+
+    pub fn print_certicate_info(&self, cert: &X509) -> Option<bool>
+    {
+        // print issue name 
+        self.output_certificate_info(cert.issuer_name());
+        self.output_certificate_info(cert.subject_name());
+        
+        let subject_alt_names = cert.subject_alt_names()?;
+
+        for name in subject_alt_names {
+            for n in name.dnsname() {
+                println!("{}", n.to_lowercase());
+            }
+        // Assuming UTF-8 encoded data, print the issuer alternative name
+        //println!("{}", String::from_utf8_lossy(value.as_slice()));       
+    }
+
+    return Some(true)
+       
+       
+    }
+    
+    pub fn output_certificate_info(&self, entry: &X509NameRef) {
+        for entry in entry.entries() {
+            println!("{}:{}", entry.object().to_string(), entry.data().as_utf8().unwrap());
+        }
+    }
 }
 
 impl NetworkTask for CertProvider {
@@ -75,21 +106,21 @@ impl NetworkTask for CertProvider {
         let der_bytes = first_cert.as_ref();
 
         println!("Processing certificate names");
+
         let x509 = X509::from_der(der_bytes);
         let target_certificate = x509.unwrap().to_owned();
 
-        let entry = target_certificate.issuer_name();
+        self.print_certicate_info(&target_certificate);
 
-        for entry in entry.entries() {
-            println!("{}:{}", entry.object().to_string(), entry.data().as_utf8().unwrap());
-        }
+        // let entry = target_certificate.issuer_name();
+        // for entry in entry.entries() {
+        //     println!("{}:{}", entry.object().to_string(), entry.data().as_utf8().unwrap());
+        // }
 
         println!("==== certificate names");
-        // Write the DER bytes to standard output
-        std::io::stdout().write_all(der_bytes);
+        //Write the DER bytes to standard output
+        //std::io::stdout().write_all(der_bytes);
 
-        //println!("{}", pem.unwrap());
-                      
         writeln!(
             &mut std::io::stderr(),
             "Current ciphersuite: {:?}",
@@ -97,7 +128,6 @@ impl NetworkTask for CertProvider {
         )
         .unwrap();
 
-        //tls.conn.send_close_notify();
 
         let mut plaintext = Vec::new();
         tls.read_to_end(&mut plaintext).unwrap();
